@@ -2,7 +2,7 @@
 
 <h1>About</h1>
 
-<p>This post wall is an experiment in IPFS - the InterPlanetary File System and this is a WIP. Adding posts to this site will distribute the data p2p in an attempt . Infact, this whole site is hosted on IPFS!  Remeber back in the 90's when sites would host a guestbook? Well now you can sign the IPFS guestbook. <a href="#/wall">Try it here!</a></p>
+<p>This post wall is an experiment in IPFS - the InterPlanetary File System and this is a WIP. Adding posts to this site will distribute the data p2p. In fact, this whole site is hosted on IPFS!  Remeber back in the 90's when sites would host a guestbook? Well now you can sign the IPFS guestbook. <a href="#/wall">Try it here!</a></p>
 
 
 
@@ -20,4 +20,4 @@
 
 <h1>Caveats</h1>
 
-<p>This site is experimental and I have no guarantee that it will work for you.  IPNS is still a work in progress. If CORS allows it this also may publish to your IPNS object if viewed through your gateway since this site calls ipfs.publish which currently doesn't take an id parameter (assumed to be you're own id). </p>
+<p>This site is experimental and I have no guarantee that it will work for you.  IPNS is still a work in progress. If CORS allows it this also may publish to your IPNS object if viewed through your gateway since this site calls ipfs.publish which currently doesn't take an id parameter (assumed to be your own id). </p>
