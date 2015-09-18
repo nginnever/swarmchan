@@ -1,0 +1,30 @@
+<html>
+	<head>
+		<title>IPFS Permawall</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular-route.js"></script>
+		<script src="javascripts/ipfsapi.min.js"></script>
+		<script src="javascripts/wallApp.js"></script>
+		<script src="javascripts/bundle.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+		<link rel="stylesheet" href="stylesheets/style.css">
+	</head>
+	<script>var ipfs = window.ipfsAPI();</script>
+	<body ng-app="wallApp">
+		<div id='main' class="container">
+			<nav class="navbar-fluid navbar-default navbar-fixed-top">
+				<div class="container">
+					<a class="navbar-header" style="position: relative; top:5px;" href="http://ipfs.io/"><img src="images/ipfs-logo-text-256-ice.png" style="width:100px; height:40px;"></a>
+ 					<a class="navbar-brand" style="position: relative; left:95px;" href="#/wall"> Permawall</a>
+					<p class="navbar-text" style="position: relative; left:80px;"> Write something that will last forever!</p>
+					<p class="navbar-right navbar-text"><a href="#/login">Login</a> or <a href="#/register">Register</a></p>
+					<p class="navbar-right navbar-text"><a href="#/">About</a></p>
+				</div>
+			</nav>
+			<div class="col-md-offset-2 col-md-8">
+				<div ng-view>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
