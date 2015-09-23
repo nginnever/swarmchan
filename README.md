@@ -2,7 +2,7 @@
 
 <h1>About</h1>
 
-<p>This post wall is an experiment in IPFS - the InterPlanetary File System and this is a WIP. Adding posts to this site will distribute the data p2p. In fact, this whole site is hosted on IPFS!  Remeber back in the 90's when sites would host a guestbook? Well now you can sign the IPFS guestbook. <a href="#/wall">Try it here!</a></p>
+<p>This post wall is an experiment in IPFS - the InterPlanetary File System and this is a WIP. Adding posts to this site will distribute the data p2p. In fact, this whole site is hosted on IPFS!  Remeber back in the 90's when sites would host a guestbook? Well now you can sign the IPFS guestbook. <a href="http://voxelot.us/ipfs/QmYc3K9akvoDbnZiV4VEzmzZh4w4KjEVGWhRzmACKLf1CT">Try it here!</a></p>
 
 
 
