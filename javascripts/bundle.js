@@ -32914,6 +32914,9 @@ var ipfs = ipfs_api('localhost', '5001');
 var http = require("http");
 var web3 = require('web3');
 
+var permaObj = [];
+var hash = '';
+
 app.config(function($routeProvider){
   $routeProvider
     //the timeline display
@@ -32938,20 +32941,24 @@ app.config(function($routeProvider){
     });
     
 });
-var permaObj = [];
-var hash = '';
+
+
+//ethereum connections
+window.getAddress = function(){
+  web3.setProvider(new web3.providers.HttpProvider());
+
+var coinbase = web3.eth.accounts[0];
+var balance = web3.fromWei(web3.eth.getBalance(coinbase), "ether");
+return coinbase;
+}
 
 app.controller('dataController', function($scope){
   //var id = 'QmNjRVohhWBX31EoaAXkrj5mPF9vQNcTVvQgWHNwdxweCN';
   var id = 'Qmd4kFg6HMp7c1Uqnm2UZqx7iGoECKA8r3sXHN2UcTY2pB';
+  //$scope.address = coinbase;
 
-  //ethereum connections
-  web3.setProvider(new web3.providers.HttpProvider());
 
-  var coinbase = web3.eth.accounts[0];
-  var balance = web3.fromWei(web3.eth.getBalance(coinbase), "ether");
-
-  console.log(balance);
+  //console.log(coinbase);
 
   function resolveID(callback){
     ipfs.name.resolve(id, function(err,res){

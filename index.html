@@ -5,11 +5,15 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular-route.js"></script>
 		<script src="javascripts/ipfsapi.js"></script>
 		<script src="javascripts/bundle.js"></script>
+
+
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 		<link rel="stylesheet" href="stylesheets/style.css">
+
 	</head>
-	<script>var ipfs = window.ipfsAPI();</script>
+
 	<body ng-app="wallApp">
+	
 		<div id='main' class="container">
 			<nav class="navbar-fluid navbar-default navbar-fixed-top">
 				<div class="container">
@@ -20,10 +24,26 @@
 					<p class="navbar-right navbar-text"><a href="#/">About</a></p>
 				</div>
 			</nav>
+			<div id="sidebar-wrapper">
+        		<ul class="sidebar-nav">
+            		<li class="sidebar-brand"><b>Ether Address</b></li>
+            		<li class="sidebar-brand"><font size="1" id="address"></font></li>
+            		<li class="sidebar-brand"><b>Ether Balance</b></li>
+            		<li class="sidebar-brand"><font size="1" id="balance"></font></li>
+        		</ul>
+   			</div>
 			<div class="col-md-offset-2 col-md-8">
 				<div ng-view>
+					
 				</div>
 			</div>
 		</div>
 	</body>
+	<script type="text/javascript">
+  			var addy = getAddress();
+  			var bal = getBalance();
+  			document.getElementById('address').innerHTML = addy;
+  			document.getElementById('balance').innerHTML = bal;
+  			console.log("got addy " + test);
+  		</script>
 </html>
