@@ -32947,9 +32947,17 @@ app.config(function($routeProvider){
 window.getAddress = function(){
   web3.setProvider(new web3.providers.HttpProvider());
 
-var coinbase = web3.eth.accounts[0];
-var balance = web3.fromWei(web3.eth.getBalance(coinbase), "ether");
-return coinbase;
+  var coinbase = web3.eth.accounts[0];
+  var balance = web3.fromWei(web3.eth.getBalance(coinbase), "ether");
+  return coinbase;
+}
+
+window.getBalance = function(){
+  web3.setProvider(new web3.providers.HttpProvider());
+
+  var coinbase = web3.eth.accounts[0];
+  var balance = web3.fromWei(web3.eth.getBalance(coinbase), "ether");
+  return balance;
 }
 
 app.controller('dataController', function($scope){

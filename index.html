@@ -17,19 +17,21 @@
 		<div id='main' class="container">
 			<nav class="navbar-fluid navbar-default navbar-fixed-top">
 				<div class="container">
-					<a class="navbar-header" style="position: relative; top:5px;" href="http://ipfs.io/"><img src="images/ipfs-logo-text-256-ice.png" style="width:100px; height:40px;"></a>
- 					<a class="navbar-brand" style="position: relative; left:95px;" href="#/wall"> Permawall</a>
-					<p class="navbar-text" style="position: relative; left:80px;"> Write something that will last forever!</p>
+					<a class="navbar-header" style="position: relative; top:5px; margin-left:-90px;" href="http://ipfs.io/"><img src="images/ipfs-logo-text-256-ice.png" style="width:100px; height:40px; "></a>
+					<a class="navbar-header" style="position: relative; top:5px; height: 50px; margin-left:20px;" href="https://www.ethereum.org/"><img src="images/ETHEREUM_NAV-BAR-LOGO.png" style="width:150px; height:35px;"></a>
+ 					<a class="navbar-brand" style="position: relative; left:155px; " href="#/wall"> Permawall <font size="3">v0.0.1</font></a>
+					<p class="navbar-text" style="position: relative; left:150px;"> Write something that will last forever!</p>
 					<p class="navbar-right navbar-text"><a href="#/login">Login</a> or <a href="#/register">Register</a></p>
 					<p class="navbar-right navbar-text"><a href="#/">About</a></p>
 				</div>
 			</nav>
 			<div id="sidebar-wrapper">
         		<ul class="sidebar-nav">
-            		<li class="sidebar-brand"><b>Ether Address</b></li>
+            		<li class="sidebar-brand"><b>Address</b></li>
             		<li class="sidebar-brand"><font size="1" id="address"></font></li>
+            		<li><br></li>
             		<li class="sidebar-brand"><b>Ether Balance</b></li>
-            		<li class="sidebar-brand"><font size="1" id="balance"></font></li>
+            		<li class="sidebar-brand"><font size="3" id="balance"></font></li>
         		</ul>
    			</div>
 			<div class="col-md-offset-2 col-md-8">
@@ -44,6 +46,5 @@
   			var bal = getBalance();
   			document.getElementById('address').innerHTML = addy;
   			document.getElementById('balance').innerHTML = bal;
-  			console.log("got addy " + test);
   		</script>
 </html>
