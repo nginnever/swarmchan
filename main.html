@@ -1,7 +1,7 @@
 <div class="clearfix">
 	<form ng-Submit="post()">
-		<input required type="text" class="form-control" placeholder="Your name" ng-model="newPost.created_by" /> 
-		<textarea required class="form-control selectMe" maxlength="200" rows="3" placeholder="Say something" ng-model="newPost.text"></textarea>
+		<input required type="text" class="form-control" maxlength="20" placeholder="Your name" ng-model="newPost.created_by" /> 
+		<textarea required class="form-control selectMe" maxlength="100" rows="3" placeholder="Say something" ng-model="newPost.text"></textarea>
 		<input class="btn submit-btn pull-right" type="submit" value="Permapost!" />
 	<div>
 		<h4>Permafeed</h4>
