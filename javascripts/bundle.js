@@ -32929,19 +32929,24 @@ app.config(function($routeProvider){
       templateUrl: 'about.html',
       controller: 'dataController'  
     })
-    //the login display
-    .when('/login', {
-      templateUrl: 'login.html',
-      controller: 'authController'
+    //the image boards display
+    .when('/boards', {
+      templateUrl: 'boards.html'
     })
-    //the signup display
-    .when('/register', {
-      templateUrl: 'register.html',
-      controller: 'authController'
-    });
+
+    //controllers for each board
+    .when('/b', {
+      templateUrl: 'b.html',
+      controller: 'bController'
+    })
+
+    // //the signup display *** we won't be doing any of this ;)
+    // .when('/register', {
+    //   templateUrl: 'register.html',
+    //   controller: 'authController'
+    // });
     
 });
-
 
 //ethereum connections
 window.getAddress = function(){
@@ -32960,9 +32965,14 @@ window.getBalance = function(){
   return balance;
 }
 
+app.controller('bController', function($scope){
+  //do some smart contract call here to get data hash for b board
+});
+
 app.controller('dataController', function($scope){
   //var id = 'QmNjRVohhWBX31EoaAXkrj5mPF9vQNcTVvQgWHNwdxweCN';
-  var id = 'Qmd4kFg6HMp7c1Uqnm2UZqx7iGoECKA8r3sXHN2UcTY2pB';
+  //var id = 'Qmd4kFg6HMp7c1Uqnm2UZqx7iGoECKA8r3sXHN2UcTY2pB';
+  var id = 'QmdprAq8ZvnfpRfFsDUjLbNoZXEzrE8rc4quSaje3m5dgN';
   //$scope.address = coinbase;
 
 

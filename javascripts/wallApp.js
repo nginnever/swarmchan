@@ -4,6 +4,9 @@ var ipfs = ipfs_api('localhost', '5001');
 var http = require("http");
 var web3 = require('web3');
 
+var permaObj = [];
+var hash = '';
+
 app.config(function($routeProvider){
   $routeProvider
     //the timeline display
@@ -16,32 +19,53 @@ app.config(function($routeProvider){
       templateUrl: 'about.html',
       controller: 'dataController'  
     })
-    //the login display
-    .when('/login', {
-      templateUrl: 'login.html',
-      controller: 'authController'
+    //the image boards display
+    .when('/boards', {
+      templateUrl: 'boards.html'
     })
-    //the signup display
-    .when('/register', {
-      templateUrl: 'register.html',
-      controller: 'authController'
-    });
+
+    //controllers for each board
+    .when('/b', {
+      templateUrl: 'b.html',
+      controller: 'bController'
+    })
+
+    // //the signup display *** we won't be doing any of this ;)
+    // .when('/register', {
+    //   templateUrl: 'register.html',
+    //   controller: 'authController'
+    // });
     
 });
-var permaObj = [];
-var hash = '';
 
-app.controller('dataController', function($scope){
-  //var id = 'QmNjRVohhWBX31EoaAXkrj5mPF9vQNcTVvQgWHNwdxweCN';
-  var id = 'Qmd4kFg6HMp7c1Uqnm2UZqx7iGoECKA8r3sXHN2UcTY2pB';
-
-  //ethereum connections
+//ethereum connections
+window.getAddress = function(){
   web3.setProvider(new web3.providers.HttpProvider());
 
   var coinbase = web3.eth.accounts[0];
   var balance = web3.fromWei(web3.eth.getBalance(coinbase), "ether");
+  return coinbase;
+}
 
-  console.log(balance);
+window.getBalance = function(){
+  web3.setProvider(new web3.providers.HttpProvider());
+
+  var coinbase = web3.eth.accounts[0];
+  var balance = web3.fromWei(web3.eth.getBalance(coinbase), "ether");
+  return balance;
+}
+
+app.controller('bController', function($scope){
+  //do some smart contract call here to get data hash for b board
+});
+
+app.controller('dataController', function($scope){
+  //var id = 'QmNjRVohhWBX31EoaAXkrj5mPF9vQNcTVvQgWHNwdxweCN';
+  var id = 'Qmd4kFg6HMp7c1Uqnm2UZqx7iGoECKA8r3sXHN2UcTY2pB';
+  //$scope.address = coinbase;
+
+
+  //console.log(coinbase);
 
   function resolveID(callback){
     ipfs.name.resolve(id, function(err,res){
@@ -110,14 +134,14 @@ app.controller('mainController', function($scope){
           ipfsPublish(returnHash, function(o){
             console.log("Hash: "+o.Value + " Published to ID: "+o.Name);
           })
-      		function ipfsPublish(returnHash, callback){
+          function ipfsPublish(returnHash, callback){
             var options = {
                 host: 'localhost',
                 port: 5001,
                 path: '/api/v0/name/publish?arg='+returnHash+'&stream-channels=true',
                 method: 'POST'
               };
- 
+
             var req = http.request(options, function(res) {
               res.setEncoding('utf8');
               res.on('data', function (chunk) {
@@ -134,6 +158,7 @@ app.controller('mainController', function($scope){
       });
       
       $scope.newPost.created_at = Date.now();
+      objStr = JSON.stringify(permaObj);
       $scope.posts2.push($scope.newPost);
       $scope.newPost = {created_by: '', text: '', created_at: ''};
     };

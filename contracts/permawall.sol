@@ -1,6 +1,6 @@
 contract permawall{
 	
-	string dataHash;
+	string dataHash = "test";
 
 	function setHash(string givenHash) {
 		dataHash = givenHash;
