@@ -32952,7 +32952,7 @@ app.config(function($routeProvider){
 window.getAddress = function(){
   web3.setProvider(new web3.providers.HttpProvider());
 
-  var coinbase = web3.eth.accounts[0];
+  var coinbase = web3.eth.accounts[1];
   var balance = web3.fromWei(web3.eth.getBalance(coinbase), "ether");
   return coinbase;
 }
@@ -32960,9 +32960,26 @@ window.getAddress = function(){
 window.getBalance = function(){
   web3.setProvider(new web3.providers.HttpProvider());
 
-  var coinbase = web3.eth.accounts[0];
+  var coinbase = web3.eth.accounts[1];
   var balance = web3.fromWei(web3.eth.getBalance(coinbase), "ether");
   return balance;
+}
+
+window.watchBlocks = function(){
+  var filter = web3.eth.filter('pending');
+  filter.watch(function(err, log){
+      web3.eth.getBlock('latest', function(error, result){
+        if(!error){
+          console.log(result)
+        }
+        else
+          console.error(error);
+      });
+
+      if(!err){
+        //console.log(log);
+      }
+    });
 }
 
 app.controller('bController', function($scope){
@@ -32972,52 +32989,73 @@ app.controller('bController', function($scope){
 app.controller('dataController', function($scope){
   //var id = 'QmNjRVohhWBX31EoaAXkrj5mPF9vQNcTVvQgWHNwdxweCN';
   //var id = 'Qmd4kFg6HMp7c1Uqnm2UZqx7iGoECKA8r3sXHN2UcTY2pB';
-  var id = 'QmdprAq8ZvnfpRfFsDUjLbNoZXEzrE8rc4quSaje3m5dgN';
-  //$scope.address = coinbase;
+  var id = 'QmdprAq8ZvnfpRfFsDUjLbNoZXEzrE8rc4quSaje3m5dgN23';
+
+  console.log(web3.currentProvider)
+  if(!web3.currentProvider){
+    console.log("no provider... creating")
+    web3.setProvider(new web3.providers.HttpProvider());
+  }
 
 
-  //console.log(coinbase);
+  var contractCode = '0x60606040526000357c0100000000000000000000000000000000000000000000000000000000900480631ed83fd414610044578063d13319c41461009a57610042565b005b6100986004808035906020019082018035906020019191908080601f0160208091040260200160405190810160405280939291908181526020018383808284378201915050505050509090919050506101d1565b005b6100a76004805050610115565b60405180806020018281038252838181518152602001915080519060200190808383829060006004602084601f0104600302600f01f150905090810190601f1680156101075780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b602060405190810160405280600081526020015060006000508054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156101c25780601f10610197576101008083540402835291602001916101c2565b820191906000526020600020905b8154815290600101906020018083116101a557829003601f168201915b505050505090506101ce565b90565b8060006000509080519060200190828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f1061022057805160ff1916838001178555610251565b82800160010185558215610251579182015b82811115610250578251826000505591602001919060010190610232565b5b50905061027c919061025e565b80821115610278576000818150600090555060010161025e565b5090565b50505b5056';
+  var permachanContract = web3.eth.contract([{"constant":false,"inputs":[{"name":"givenHash","type":"string"}],"name":"setHash","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"getHash","outputs":[{"name":"data","type":"string"}],"type":"function"}]);
+  var permachanInstance = permachanContract.at('0x140c702c7a0fbeeb774ac62d06d5aa3e2cd1bfe7');
 
-  function resolveID(callback){
-    ipfs.name.resolve(id, function(err,res){
-      if(err|| !res){
-        return console.error(err)
-      }
-      var jsonString = String(res.Path);
-      jsonString = jsonString.replace('/ipfs/','');
-      hash = jsonString;
-      console.log(jsonString);
-      callback();
-    });
-  };
+  var testEth = permachanInstance.getHash();
 
-  resolveID(function(){
-    ipfs.cat(hash, function (err, res) {
-        if (err || !res) {
-            return console.error(err)
-        }
+  console.log(testEth);
+  console.log(web3.eth.getCode('0x140c702c7a0fbeeb774ac62d06d5aa3e2cd1bfe7'));
 
-        if (res.readable) {
-            // Returned as a stream
-            //comment out as to not use response object on the console
-            //res.pipe(process.stdout); 
-            var string = '';
+  var splitHash2 = id;
+  var firstHalf2 = splitHash2.substr(0, 23);
+  var secondHalf2 = splitHash2.substr(24);
 
-            //turn the buffer response from ipfs into string then json
-            res.setEncoding('utf8');
-            res.on('readable', function () {
-                var part = res.read().toString();
-                string += part;
-                var obj = JSON.parse(string);
-                permaObj = obj;        
-            })
-        } else {
-            var obj = res;
-            permaObj = obj;
-            console.log(obj);
-        }
-      });
-    });
+  console.log(firstHalf2);
+  console.log(secondHalf2);
+  console.log(firstHalf2+secondHalf2);
+
+  //ipns resolving - replaced with ethereum
+  // function resolveID(callback){
+  //   ipfs.name.resolve(id, function(err,res){
+  //     if(err|| !res){
+  //       return console.error(err)
+  //     }
+  //     var jsonString = String(res.Path);
+  //     jsonString = jsonString.replace('/ipfs/','');
+  //     hash = jsonString;
+  //     console.log(jsonString);
+  //     callback();
+  //   });
+  // };
+
+  // resolveID(function(){
+  //   ipfs.cat(hash, function (err, res) {
+  //       if (err || !res) {
+  //           return console.error(err)
+  //       }
+
+  //       if (res.readable) {
+  //           // Returned as a stream
+  //           //comment out as to not use response object on the console
+  //           //res.pipe(process.stdout); 
+  //           var string = '';
+
+  //           //turn the buffer response from ipfs into string then json
+  //           res.setEncoding('utf8');
+  //           res.on('readable', function () {
+  //               var part = res.read().toString();
+  //               string += part;
+  //               var obj = JSON.parse(string);
+  //               permaObj = obj;        
+  //           })
+  //       } else {
+  //           var obj = res;
+  //           permaObj = obj;
+  //           console.log(obj);
+  //       }
+  //     });
+  //   });
 });
 
 app.controller('mainController', function($scope){
@@ -33042,30 +33080,34 @@ app.controller('mainController', function($scope){
              });  
       }
       wait(function(){
-          ipfsPublish(returnHash, function(o){
-            console.log("Hash: "+o.Value + " Published to ID: "+o.Name);
-          })
-      		function ipfsPublish(returnHash, callback){
-            var options = {
-                host: 'localhost',
-                port: 5001,
-                path: '/api/v0/name/publish?arg='+returnHash+'&stream-channels=true',
-                method: 'POST'
-              };
 
-            var req = http.request(options, function(res) {
-              res.setEncoding('utf8');
-              res.on('data', function (chunk) {
-                json = JSON.parse(chunk);
-                callback(json);
-              });
-            });
-            req.on('error', function(e) {
-            console.log('problem with request: ' + e.message);
-            });
+        var splitHash = returnHash;
+        var firstHalf = splitHash.substr(0, 23);
+        var secondHalf = splitHash.substr(24);
+        //   ipfsPublish(returnHash, function(o){
+        //     console.log("Hash: "+o.Value + " Published to ID: "+o.Name);
+        //   })
+      		// function ipfsPublish(returnHash, callback){
+        //     var options = {
+        //         host: 'localhost',
+        //         port: 5001,
+        //         path: '/api/v0/name/publish?arg='+returnHash+'&stream-channels=true',
+        //         method: 'POST'
+        //       };
 
-          req.end();
-        }
+        //     var req = http.request(options, function(res) {
+        //       res.setEncoding('utf8');
+        //       res.on('data', function (chunk) {
+        //         json = JSON.parse(chunk);
+        //         callback(json);
+        //       });
+        //     });
+        //     req.on('error', function(e) {
+        //     console.log('problem with request: ' + e.message);
+        //     });
+
+        //   req.end();
+        // }
       });
       
       $scope.newPost.created_at = Date.now();
