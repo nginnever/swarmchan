@@ -32990,7 +32990,7 @@ app.controller('bController', function($scope){
 app.controller('dataController', function($scope){
   //var id = 'QmNjRVohhWBX31EoaAXkrj5mPF9vQNcTVvQgWHNwdxweCN';
   //var id = 'Qmd4kFg6HMp7c1Uqnm2UZqx7iGoECKA8r3sXHN2UcTY2pB';
-  //var id = 'QmdprAq8ZvnfpRfFsDUjLbNoZXEzrE8rc4quSaje3m5dgN23';
+  //var id = 'QmdprAq8ZvnfpRfFsDUjLbNoZXEzrE8rc4quSaje3m5dgN';
 
   console.log(web3.currentProvider)
   if(!web3.currentProvider){
