@@ -32931,7 +32931,8 @@ app.config(function($routeProvider){
     })
     //the image boards display
     .when('/boards', {
-      templateUrl: 'boards.html'
+      templateUrl: 'boards.html',
+      controller: 'dataController'
     })
 
     //controllers for each board
@@ -33061,9 +33062,12 @@ app.controller('mainController', function($scope){
     $scope.posts2 = permaObj;
     $scope.hash = hash;
     $scope.newPost = {created_by: '', text: '', created_at: ''};
+    //$scope.pic;
 
     $scope.post = function(){
       var newObjStr = JSON.stringify(permaObj);
+      //var pic = scope.newPost.pic;
+      //console.log(pic.val());
       newObjStr = newObjStr.replace(']','');
       newObjStr += ',{\"created_by\":\"'+$scope.newPost.created_by+'\",\"text\":\"'+$scope.newPost.text+'\",\"created_at\":\"'+Date.now()+'\"}]';
       var newObj = JSON.parse(newObjStr);
