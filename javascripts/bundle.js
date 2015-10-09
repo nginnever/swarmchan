@@ -32917,6 +32917,7 @@ var web3 = require('web3');
 var permaObj = [];
 var hash = '';
 
+
 app.config(function($routeProvider){
   $routeProvider
     //the timeline display
@@ -32939,6 +32940,10 @@ app.config(function($routeProvider){
     .when('/b', {
       templateUrl: 'b.html',
       controller: 'bController'
+    })
+
+    .when('/coming', {
+      templateUrl: 'coming.html' //lulz
     })
 
     // //the signup display *** we won't be doing any of this ;)
@@ -32983,6 +32988,7 @@ window.getBalance = function(){
 //       }
 //     });
 // }
+
 
 app.controller('bController', function($scope){
   //do some smart contract call here to get data hash for b board
@@ -33057,20 +33063,49 @@ app.controller('dataController', function($scope){
     });
 });
 
+
+//*
+app.controller('pageCtrl', function($scope){
+  $scope.currentPage = 0;
+  $scope.limit = 10;
+})
+
+app.filter('startFrom', function() {
+    return function(input, start) {
+        start = +start; //parse to int
+        return input.slice(start);
+    }
+});
+
 app.controller('mainController', function($scope){
     var returnHash = '';
     $scope.posts2 = permaObj;
     $scope.hash = hash;
     $scope.newPost = {created_by: '', text: '', created_at: ''};
-    //$scope.pic;
+    $scope.pic;
+
+    $scope.currentPage = 0;
+    $scope.pageSize = 5;
+    $scope.mySort = $scope.newestFirst = function(post) {
+        return -$scope.posts2.indexOf(post);
+    }
+
+    $scope.numberOfPages=function(){
+        return Math.ceil(Object.keys(permaObj).length/$scope.pageSize);                
+    }
+
 
     $scope.post = function(){
       var newObjStr = JSON.stringify(permaObj);
-      //var pic = scope.newPost.pic;
-      //console.log(pic.val());
+      if($scope.newPost.created_by == ""){
+        $scope.newPost.created_by = "Anonymous"
+      }
+
       newObjStr = newObjStr.replace(']','');
       newObjStr += ',{\"created_by\":\"'+$scope.newPost.created_by+'\",\"text\":\"'+$scope.newPost.text+'\",\"created_at\":\"'+Date.now()+'\"}]';
       var newObj = JSON.parse(newObjStr);
+
+      
 
       function wait(callback){
         console.log("adding this object " + newObjStr);
@@ -33081,6 +33116,7 @@ app.controller('mainController', function($scope){
                   callback();
              });  
       }
+
       wait(function(){
         //set the variables in contract
         var splitHash = returnHash;

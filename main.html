@@ -1,19 +1,35 @@
 <div class="clearfix">
 	<form ng-Submit="post()">
 		<p style="background-color: #fcc;">warning! this will cost ~ 0.002 Ether</p>
-		<input required type="text" class="form-control" maxlength="40" placeholder="Your name" ng-model="newPost.created_by" /> 
+		<input type="text" class="form-control" maxlength="40" placeholder="Your name (Anon if left blank)" ng-model="newPost.created_by" /> 
 		<textarea required class="form-control selectMe" maxlength="100" rows="3" placeholder="Say something" ng-model="newPost.text"></textarea>
-		<input type="file" name="pic" accept="image/*" ng-model="newPost.pic">
-		<input class="btn submit-btn pull-right" type="submit" value="Post" />
+		Picture: coming soon! <input type="file" ng-model="picFile" name="file" accept="image/*">
+		<input class="btn submit-btn pull-right" type="submit" value="Post" style="margin-top:-40px;"/>
 	<div>
 		<br>
 		<p>Current data hash: {{hash}}</p>
+		<div ng-controller="pageCtrl">
+			<select ng-model='limit'>
+				<option value="">Select...</option>
+	            <option value='5'>Show 5 per page</option>
+	            <option value="10" selected>Show 10 per page</option>
+	            <option value='15'>Show 15 per page</option>
+	            <option value='20'>Show 20 per page</option>
+	        </select>
+        </div>
 		<hr>
-			<div class="post" ng-repeat="post in posts2 track by $index| orderBy:'created_at':true" ng-class-odd="'odd'" ng-class-even="'even'"> 
-				<p>{{post.text}}</p>
+			<div class="post" ng-repeat="post in posts2 | orderBy:mySort | startFrom:currentPage*pageSize | limitTo:pageSize" ng-class-odd="'odd'" ng-class-even="'even'"> 
+				<p>{{post.text}}<a class="pull-right" href="#/coming">reply</a></p>
 				<small>Posted by @{{post.created_by}}</small>
 				<small class="pull-right">{{post.created_at | date:"h:mma 'on' MMM d, y"}}</small>
 			</div>
+		<hr>
+			<button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+        		Previous
+    		</button>
+    			{{currentPage+1}}/{{numberOfPages()}}
+    		<button ng-disabled="currentPage >= data.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+        		Next
+    		</button>
 	</div>
 </div>
-
