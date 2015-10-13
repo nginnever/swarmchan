@@ -33084,6 +33084,7 @@ app.controller('mainController', function($scope){
     $scope.newPost = {created_by: '', text: '', created_at: ''};
     $scope.pic;
 
+    //pagenation stuff
     $scope.currentPage = 0;
     $scope.pageSize = 5;
     $scope.mySort = $scope.newestFirst = function(post) {
@@ -33095,6 +33096,7 @@ app.controller('mainController', function($scope){
     }
 
 
+    //post handler 
     $scope.post = function(){
       var newObjStr = JSON.stringify(permaObj);
       if($scope.newPost.created_by == ""){
