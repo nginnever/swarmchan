@@ -23,6 +23,18 @@ list-style-type: none;
     #hide { display: none; }
 }
 
+#dropTarget {
+	width: 100px;
+	height: 100px;
+	border-radius: 10px;
+	border: 0px rgb(89,89,89) solid;
+
+	-moz-box-shadow:  -1px 0px 10px 2px rgb(128,128,128);
+	-webkit-box-shadow:  -1px 0px 10px 2px rgb(128,128,128);
+	box-shadow:  -1px 0px 10px 2px rgb(128,128,128);
+	margin-top: 10px;
+}
+
 #sidebar-wrapper {
   overflow: hidden;	
   margin-left: -250px;

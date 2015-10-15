@@ -194,25 +194,31 @@ app.controller('mainController', function($scope){
         console.log(file.fullPath)
 
         // convert the file to a Buffer that we can use!
-        var reader = new FileReader()
-        reader.addEventListener('load', function (e) {
-          // e.target.result is an ArrayBuffer
-          var arr = new Uint8Array(e.target.result)
-          var buffer = new Buffer(arr)
-  
-          // do something with the buffer!
-          ipfs.add(new Buffer(buffer), function (err, res) {
-                      if (err || !res) return console.error(err)
-                      returnHash = res.Hash;
-                      console.log(returnHash);
-                });  
-          console.log(buffer)
-        })
-        reader.addEventListener('error', function (err) {
-          console.error('FileReader error' + err)
-        })
-        console.log('test')
-        reader.readAsArrayBuffer(file)
+        var imageType = /image.*/;
+        if (file.type.match(imageType)) {
+//             console.log('this is an image')
+          var reader = new FileReader()
+          reader.addEventListener('load', function (e) {
+            // e.target.result is an ArrayBuffer
+            var arr = new Uint8Array(e.target.result)
+            var buffer = new Buffer(arr)
+    
+            // do something with the buffer!
+            ipfs.add(new Buffer(buffer), function (err, res) {
+                        if (err || !res) return console.error(err)
+                        returnHash = res.Hash;
+                        console.log(returnHash);
+                  });  
+            console.log(buffer)
+          })
+          reader.addEventListener('error', function (err) {
+            console.error('FileReader error' + err)
+          })
+          console.log('test')
+          reader.readAsArrayBuffer(file)
+        }else{
+          alert('Please upload an image')
+        }
       })
     })
 
