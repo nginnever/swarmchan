@@ -15,7 +15,16 @@ ul {
 list-style-type: none;
 }
 
+@media all and (max-width: 1000px) {
+    #sidebar-wrapper { display: none; }
+}
+
+@media all and (max-width: 1000px) {
+    #hide { display: none; }
+}
+
 #sidebar-wrapper {
+  overflow: hidden;	
   margin-left: -250px;
   left: 250px;
   width: 300px;
