@@ -26863,6 +26863,7 @@ app.directive('fdInput', [function () {
 }]);
 
 app.controller('mainController', function($scope){
+
     //drag-drop
     dragDrop('#dropTarget', function (files) {
       console.log('Here are the dropped files', files)
@@ -26876,34 +26877,39 @@ app.controller('mainController', function($scope){
         console.log(file.fullPath)
 
         // convert the file to a Buffer that we can use!
+        //use this reader to read preview of image
         var imageType = /image.*/;
+        var resize = 0;
+  
         if (file.type.match(imageType)) {
-          var reader2 = new FileReader()
-          reader2.addEventListener('load', function (e) {
-            // e.target.result is an ArrayBuffer
-
-            var img = new Image();
-            img.src = e.target.result;
-            dropTarget.innerHTML = "<div>test</div>";
-            dropTarget.appendChild(img);
+        //console.log('this is an image')
+          var previewReader = new FileReader()
+          previewReader.addEventListener('load', function (e) {
+            var image = new Image();
+            image.src = e.target.result;
+            image.onload = function() {
+              var x = this.width;
+              var y = this.height;
+              resize = parseInt((150/x)*y);
+              // console.log(this.width);
+              // console.log(this.height);
+              // console.log("resize height to " +resize);
+            }
           })
-          reader2.readAsDataURL(file); 
-        }
-        if (file.type.match(imageType)) {
-//             console.log('this is an image')
+          previewReader.readAsDataURL(file)
           var reader = new FileReader()
           reader.addEventListener('load', function (e) {
-            // e.target.result is an ArrayBuffer;
-
+            // e.target.result is an ArrayBuffer
             var arr = new Uint8Array(e.target.result)
             var buffer = new Buffer(arr)
     
             // do something with the buffer!
             ipfs.add(new Buffer(buffer), function (err, res) {
-                        if (err || !res) return console.error(err)
-                        returnHash = res.Hash;
-                        console.log(returnHash);
-                  });  
+              if (err || !res) return console.error(err)
+              returnHash = res.Hash;
+              dropTarget.innerHTML = "<a href=\"http://localhost:8080/ipfs/"+returnHash+"\"><img src=\"http://localhost:8080/ipfs/"+returnHash+"\" height=\""+resize+"px;\" width=\"150px;\"></a>";
+              console.log(returnHash);
+            });  
             console.log(buffer)
           })
           reader.addEventListener('error', function (err) {
@@ -26912,7 +26918,6 @@ app.controller('mainController', function($scope){
           console.log('test')
           reader.readAsArrayBuffer(file)
           //for the image to preview reader.readAsDataURL(file); 
-
         }else{
           alert('Please upload an image')
         }
