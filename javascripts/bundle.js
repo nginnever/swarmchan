@@ -26882,6 +26882,12 @@ app.controller('mainController', function($scope){
           var reader = new FileReader()
           reader.addEventListener('load', function (e) {
             // e.target.result is an ArrayBuffer
+
+            var img = new Image();
+            img.src = e.target.result;
+            dropTarget.innerHTML = "test";
+            dropTarget.appendChild(img);
+
             var arr = new Uint8Array(e.target.result)
             var buffer = new Buffer(arr)
     
@@ -26898,6 +26904,8 @@ app.controller('mainController', function($scope){
           })
           console.log('test')
           reader.readAsArrayBuffer(file)
+          //for the image to preview reader.readAsDataURL(file); 
+
         }else{
           alert('Please upload an image')
         }
