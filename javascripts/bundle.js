@@ -26878,15 +26878,22 @@ app.controller('mainController', function($scope){
         // convert the file to a Buffer that we can use!
         var imageType = /image.*/;
         if (file.type.match(imageType)) {
-//             console.log('this is an image')
-          var reader = new FileReader()
-          reader.addEventListener('load', function (e) {
+          var reader2 = new FileReader()
+          reader2.addEventListener('load', function (e) {
             // e.target.result is an ArrayBuffer
 
             var img = new Image();
             img.src = e.target.result;
-            dropTarget.innerHTML = "test";
+            dropTarget.innerHTML = "<div>test</div>";
             dropTarget.appendChild(img);
+          })
+          reader2.readAsDataURL(file); 
+        }
+        if (file.type.match(imageType)) {
+//             console.log('this is an image')
+          var reader = new FileReader()
+          reader.addEventListener('load', function (e) {
+            // e.target.result is an ArrayBuffer;
 
             var arr = new Uint8Array(e.target.result)
             var buffer = new Buffer(arr)
