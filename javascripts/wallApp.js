@@ -181,7 +181,9 @@ app.directive('fdInput', [function () {
 }]);
 
 app.controller('mainController', function($scope){
-
+    var imgHash = '';
+    var resize = 0;
+    var resizePost = 0;
     //drag-drop
     dragDrop('#dropTarget', function (files) {
       console.log('Here are the dropped files', files)
@@ -197,7 +199,7 @@ app.controller('mainController', function($scope){
         // convert the file to a Buffer that we can use!
         //use this reader to read preview of image
         var imageType = /image.*/;
-        var resize = 0;
+        //var resize = 0;
   
         if (file.type.match(imageType)) {
         //console.log('this is an image')
@@ -209,25 +211,28 @@ app.controller('mainController', function($scope){
               var x = this.width;
               var y = this.height;
               resize = parseInt((150/x)*y);
-              console.log(this.width);
-              console.log(this.height);
-              console.log("resize height to " +resize);
+              resizePost = parseInt((300/x)*y);
+              // console.log(this.width);
+              // console.log(this.height);
+              // console.log("resize height to " +resize);
             }
           })
           previewReader.readAsDataURL(file)
           var reader = new FileReader()
           reader.addEventListener('load', function (e) {
             // e.target.result is an ArrayBuffer
-
             var arr = new Uint8Array(e.target.result)
             var buffer = new Buffer(arr)
     
             // do something with the buffer!
             ipfs.add(new Buffer(buffer), function (err, res) {
               if (err || !res) return console.error(err)
-              returnHash = res.Hash;
-              dropTarget.innerHTML = "<a href=\"http://localhost:8080/ipfs/"+returnHash+"\"><img src=\"http://localhost:8080/ipfs/"+returnHash+"\" height=\""+resize+"px;\" width=\"150px;\"></a>";
-              console.log(returnHash);
+              imgHash = res.Hash;
+              dropTarget.innerHTML = "<a href=\"http://localhost:8080/ipfs/"+imgHash+"\"><img src=\"http://localhost:8080/ipfs/"+imgHash+"\" height=\""+resize+"px;\" width=\"150px;\" align=\"middle\"></a>";
+              //imgPath = "<a href=\"http://localhost:8080/ipfs/"+imgHash+"\"><img src=\"http://localhost:8080/ipfs/"+imgHash+"\" height=\""+resize+"px;\" width=\"150px;\" align=\"middle\"></img></a>";
+              //preview = "<img src=\"http://localhost:8080/ipfs/"+imgHash+"\" height=\""+resize+"px;\" width=\"150px;\" align=\"middle\">"
+              //todo: add smart contract support for images hashs
+              console.log(imgHash);
             });  
             console.log(buffer)
           })
@@ -237,7 +242,6 @@ app.controller('mainController', function($scope){
           console.log('test')
           reader.readAsArrayBuffer(file)
           //for the image to preview reader.readAsDataURL(file); 
-
         }else{
           alert('Please upload an image')
         }
@@ -249,7 +253,7 @@ app.controller('mainController', function($scope){
     var returnHash = '';
     $scope.posts2 = permaObj;
     $scope.hash = hash;
-    $scope.newPost = {created_by: '', text: '', created_at: ''};
+    $scope.newPost = {created_by: '', text: '', created_at: '', pic:'', resize:''};
 
     //pagenation stuff
     $scope.currentPage = 0;
@@ -257,7 +261,6 @@ app.controller('mainController', function($scope){
     $scope.mySort = $scope.newestFirst = function(post) {
         return -$scope.posts2.indexOf(post);
     }
-
     $scope.numberOfPages=function(){
         return Math.ceil(Object.keys(permaObj).length/$scope.pageSize);                
     }
@@ -265,13 +268,18 @@ app.controller('mainController', function($scope){
 
     //post handler 
     $scope.post = function(){
+      dropTarget.innerHTML =  '';
+      //$scope.imagePath = imgPath;
+      //$scope.imagePreview = preview;
+      console.log(imgHash);
       var newObjStr = JSON.stringify(permaObj);
       if($scope.newPost.created_by == ""){
         $scope.newPost.created_by = "Anonymous"
       }
 
       newObjStr = newObjStr.replace(']','');
-      newObjStr += ',{\"created_by\":\"'+$scope.newPost.created_by+'\",\"text\":\"'+$scope.newPost.text+'\",\"created_at\":\"'+Date.now()+'\"}]';
+      newObjStr += ',{\"created_by\":\"'+$scope.newPost.created_by+'\",\"text\":\"'+$scope.newPost.text+'\",\"created_at\":\"'+Date.now()+'\",\"pic\":\"'+imgHash+'\", \"resize\":\"'+resizePost+'\"}]';
+      console.log(newObjStr)
       var newObj = JSON.parse(newObjStr);
 
       
@@ -328,8 +336,24 @@ app.controller('mainController', function($scope){
       // });
       
       $scope.newPost.created_at = Date.now();
-      objStr = JSON.stringify(permaObj);
+      $scope.newPost.pic = imgHash;
+      $scope.newPost.resize = resizePost;
+      //objStr = JSON.stringify(permaObj);
       $scope.posts2.push($scope.newPost);
-      $scope.newPost = {created_by: '', text: '', created_at: ''};
+      $scope.newPost = {created_by: '', text: '', created_at: '', pic:'', resize:''};
+      imgHash = '';
     };
+});
+
+app.controller('authController', function($scope){
+  $scope.user = {username: '', password: ''};
+  $scope.error_message = '';
+
+  $scope.login = function(){
+    $scope.error_message = 'login request for ' + $scope.user.username;
+  };
+
+  $scope.register = function(){
+    $scope.error_message = 'registeration request for ' + $scope.user.username;
+  };
 });
