@@ -26965,6 +26965,7 @@ app.controller('mainController', function($scope){
       newObjStr = newObjStr.replace(']','');
       newObjStr += ',{\"created_by\":\"'+$scope.newPost.created_by+'\",\"text\":\"'+$scope.newPost.text+'\",\"created_at\":\"'+Date.now()+'\",\"pic\":\"'+imgHash+'\", \"resize\":\"'+resizePost+'\", \"id\":\"'+id+'\", \"$$hashKey\":\"'+hashKeyz+'\"}]';
       console.log(newObjStr)
+      console.log($scope.newPost.$$hashKey);
       var newObj = JSON.parse(newObjStr);
 
       
@@ -27027,7 +27028,7 @@ app.controller('mainController', function($scope){
       $scope.newPost.id = id;
       //objStr = JSON.stringify(permaObj);
       $scope.posts2.push($scope.newPost);
-      console.log("after hash key? "+$scope.newPost.hashKey);
+      console.log("after hash key? "+$scope.newPost.$$hashKey);
       $scope.newPost = {created_by: '', text: '', created_at: '', pic:'', resize:'', id:''};
       imgHash = '';
     };
