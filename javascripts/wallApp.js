@@ -253,7 +253,7 @@ app.controller('mainController', function($scope){
     var returnHash = '';
     $scope.posts2 = permaObj;
     $scope.hash = hash;
-    $scope.newPost = {created_by: '', text: '', created_at: '', pic:'', resize:''};
+    $scope.newPost = {created_by: '', text: '', created_at: '', pic:'', resize:'', id:''};
 
     //pagenation stuff
     $scope.currentPage = 0;

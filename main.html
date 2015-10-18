@@ -29,7 +29,7 @@
 				<p ng-show="post.pic != null && post.pic != ''"><a href="http://localhost:8080/ipfs/{{post.pic}}"><img src="http://localhost:8080/ipfs/{{post.pic}}" height="{{post.resize}}px;"></a></p>
 				<!-- <a ng-href="http://localhost:8080/ipfs/{{post.pic}}"><img src="http://localhost:8080/ipfs/{{post.pic}}" height="{{post.resize}}px;"  width="150px;" align="middle"></a> -->
 			
-				<small>Posted by @{{post.created_by}}</small>
+				<small>ID: {{post.id}} Posted by @{{post.created_by}}</small>
 				<small class="pull-right">{{post.created_at | date:"h:mma 'on' MMM d, y"}}</small>
 			</div>
 		<hr>

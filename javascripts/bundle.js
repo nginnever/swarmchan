@@ -26935,7 +26935,7 @@ app.controller('mainController', function($scope){
     var returnHash = '';
     $scope.posts2 = permaObj;
     $scope.hash = hash;
-    $scope.newPost = {created_by: '', text: '', created_at: '', pic:'', resize:''};
+    $scope.newPost = {created_by: '', text: '', created_at: '', pic:'', resize:'', id:''};
 
     //pagenation stuff
     $scope.currentPage = 0;
@@ -26950,6 +26950,9 @@ app.controller('mainController', function($scope){
 
     //post handler 
     $scope.post = function(){
+      var id = generateUUID();
+      var hashKeyz = generateUUIDsmall();
+      console.log(id);
       dropTarget.innerHTML =  '';
       //$scope.imagePath = imgPath;
       //$scope.imagePreview = preview;
@@ -26960,7 +26963,7 @@ app.controller('mainController', function($scope){
       }
 
       newObjStr = newObjStr.replace(']','');
-      newObjStr += ',{\"created_by\":\"'+$scope.newPost.created_by+'\",\"text\":\"'+$scope.newPost.text+'\",\"created_at\":\"'+Date.now()+'\",\"pic\":\"'+imgHash+'\", \"resize\":\"'+resizePost+'\"}]';
+      newObjStr += ',{\"created_by\":\"'+$scope.newPost.created_by+'\",\"text\":\"'+$scope.newPost.text+'\",\"created_at\":\"'+Date.now()+'\",\"pic\":\"'+imgHash+'\", \"resize\":\"'+resizePost+'\", \"id\":\"'+id+'\", \"$$hashKey\":\"'+hashKeyz+'\"}]';
       console.log(newObjStr)
       var newObj = JSON.parse(newObjStr);
 
@@ -26978,6 +26981,7 @@ app.controller('mainController', function($scope){
 
       // wait(function(){
       //   //set the variables in contract
+      // returnHash = 'QmSEy16Cu3sGSHAbcArKh3jSLptVLgEpUrD3BSfDvtuCYR';
       //   var splitHash = returnHash;
       //   var firstHalf = splitHash.substr(0, 24);
       //   var secondHalf = splitHash.substr(24);
@@ -27020,9 +27024,11 @@ app.controller('mainController', function($scope){
       $scope.newPost.created_at = Date.now();
       $scope.newPost.pic = imgHash;
       $scope.newPost.resize = resizePost;
+      $scope.newPost.id = id;
       //objStr = JSON.stringify(permaObj);
       $scope.posts2.push($scope.newPost);
-      $scope.newPost = {created_by: '', text: '', created_at: '', pic:'', resize:''};
+      console.log("after hash key? "+$scope.newPost.hashKey);
+      $scope.newPost = {created_by: '', text: '', created_at: '', pic:'', resize:'', id:''};
       imgHash = '';
     };
  });
@@ -27039,6 +27045,26 @@ app.controller('authController', function($scope){
     $scope.error_message = 'registeration request for ' + $scope.user.username;
   };
 });
+
+function generateUUID() {
+  var d = new Date().getTime();
+  var uuid = 'xxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = (d + Math.random()*16)%16 | 0;
+      d = Math.floor(d/16);
+      return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+  });
+  return uuid;
+};
+
+function generateUUIDsmall() {
+  var d = new Date().getTime();
+  var uuid = 'xxx'.replace(/[xy]/g, function(c) {
+      var r = (d + Math.random()*16)%16 | 0;
+      d = Math.floor(d/16);
+      return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+  });
+  return uuid;
+};
 }).call(this,require("buffer").Buffer)
 },{"buffer":358,"drag-drop":1,"http":529,"ipfs-api":301,"web3":303}],355:[function(require,module,exports){
 
