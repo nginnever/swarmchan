@@ -26694,9 +26694,9 @@ var hash = '';
 app.config(function($routeProvider){
   $routeProvider
     //the timeline display
-    .when('/wall', {
-      templateUrl: 'main.html',
-      controller: 'mainController'
+    .when('/technology', {
+      templateUrl: 'tech.html',
+      controller: 'techController'
     })
     //the about display
     .when('/', {
@@ -26855,17 +26855,18 @@ app.directive('fdInput', [function () {
     link: function (scope, element, attrs) {
       element.on('change', function  (evt) {
         var files = evt.target.files;
-        console.log(files[0].name);
-        console.log(files[0].size);
+        console.log(files[1].name);
+        console.log(files[1].size);
       });
     }
   }
 }]);
 
-app.controller('mainController', function($scope){
+app.controller('techController', function($scope){
     $scope.URL = 'http://localhost:8080/ipfs/';
     var imgHash = '';
     var videoHash = '';
+    var videoURL = '';
     var resize = 0;
     var resizePost = 0;
     //drag-drop
@@ -26903,6 +26904,8 @@ app.controller('mainController', function($scope){
               //preview = "<img src=\"http://localhost:8080/ipfs/"+imgHash+"\" height=\""+resize+"px;\" width=\"150px;\" align=\"middle\">"
               //todo: add smart contract support for images hashs
               console.log('video: '+videoHash);
+              videoURL = 'http://localhost:8080/ipfs/'+videoHash;
+              console.log('encoded url: '+encodeURIComponent(videoURL));
               $scope.URL = 'http://localhost:8080/ipfs/'+videoHash;
             });  
             console.log(buffer)
@@ -26963,11 +26966,8 @@ app.controller('mainController', function($scope){
         //  if(!file.type.match(video)){
         //   alert('Please upload an image or video');
         // }
-      })
-    })
-
-
-
+      });
+    });
 
     var returnHash = '';
     $scope.posts2 = permaObj;
@@ -27000,7 +27000,7 @@ app.controller('mainController', function($scope){
       }
 
       newObjStr = newObjStr.replace(']','');
-      newObjStr += ',{\"created_by\":\"'+$scope.newPost.created_by+'\",\"text\":\"'+$scope.newPost.text+'\",\"created_at\":\"'+Date.now()+'\",\"pic\":\"'+imgHash+'\",\"video\":\"'+videoHash+'\", \"resize\":\"'+resizePost+'\", \"id\":\"'+id+'\", \"$$hashKey\":\"'+hashKeyz+'\"}]';
+      newObjStr += ',{\"created_by\":\"'+$scope.newPost.created_by+'\",\"text\":\"'+$scope.newPost.text+'\",\"created_at\":\"'+Date.now()+'\",\"pic\":\"'+imgHash+'\",\"video\":\"'+videoURL+'\", \"resize\":\"'+resizePost+'\", \"id\":\"'+id+'\", \"$$hashKey\":\"'+hashKeyz+'\"}]';
       console.log(newObjStr)
       console.log($scope.newPost.$$hashKey);
       var newObj = JSON.parse(newObjStr);
@@ -27018,7 +27018,8 @@ app.controller('mainController', function($scope){
       }
 
       // wait(function(){
-      //   //set the variables in contract
+      // //   //set the variables in contract
+      // //returnHash = 'QmYBu2BwbzTxCSpNbumvLQXsxqbtuJXfTT5qzPgsqWrpUX';
       //   var splitHash = returnHash;
       //   var firstHalf = splitHash.substr(0, 24);
       //   var secondHalf = splitHash.substr(24);
@@ -27060,7 +27061,7 @@ app.controller('mainController', function($scope){
       
       $scope.newPost.created_at = Date.now();
       $scope.newPost.pic = imgHash;
-      $scope.newPost.video = videoHash;
+      $scope.newPost.video = videoURL;
       $scope.newPost.resize = resizePost;
       $scope.newPost.id = id;
       //objStr = JSON.stringify(permaObj);
