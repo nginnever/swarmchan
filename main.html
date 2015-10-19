@@ -31,8 +31,8 @@
 				<p ng-show="post.video != null && post.video != ''">
 					<!-- <a href="http://localhost:8080/ipfs/{{post.video}}"> -->
 					<video width="700" height="450" controls>  
-						<source ng-src="{{URL}}{{post.video}}">
-    					<!-- <source ng-src="{{URL}}">  -->
+						<!-- <source ng-src="http://localhost:8080/ipfs/{{post.video}}"> -->
+    					<source ng-src="{{URL}}"> 
 					</video>  
 					<!-- </a> -->
 					<!-- <video src="http://localhost:8080/ipfs/{{post.video}}" height="200px;" width="250px;" align="middle"></video> -->  
