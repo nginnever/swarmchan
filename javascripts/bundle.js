@@ -26863,7 +26863,9 @@ app.directive('fdInput', [function () {
 }]);
 
 app.controller('mainController', function($scope){
+    $scope.URL = 'http://localhost:8080/ipfs/';
     var imgHash = '';
+    var videoHash = '';
     var resize = 0;
     var resizePost = 0;
     //drag-drop
@@ -26881,7 +26883,37 @@ app.controller('mainController', function($scope){
         // convert the file to a Buffer that we can use!
         //use this reader to read preview of image
         var imageType = /image.*/;
+        //var webm = /webm.*/;
+        var video = /video.*/;
         //var resize = 0;
+
+        if (file.type.match(video)) {
+          var reader = new FileReader()
+          reader.addEventListener('load', function (e) {
+            // e.target.result is an ArrayBuffer
+            var arr = new Uint8Array(e.target.result)
+            var buffer = new Buffer(arr)
+    
+            // do something with the buffer!
+            ipfs.add(new Buffer(buffer), function (err, res) {
+              if (err || !res) return console.error(err)
+              videoHash = res.Hash;
+              dropTarget.innerHTML = "<a href=\"http://localhost:8080/ipfs/"+videoHash+"\"><video width=\"150\" height=\"100\" controls><source ng-src=\"http://localhost:8080/ipfs/"+videoHash+"></video></a>";
+              //imgPath = "<a href=\"http://localhost:8080/ipfs/"+imgHash+"\"><img src=\"http://localhost:8080/ipfs/"+imgHash+"\" height=\""+resize+"px;\" width=\"150px;\" align=\"middle\"></img></a>";
+              //preview = "<img src=\"http://localhost:8080/ipfs/"+imgHash+"\" height=\""+resize+"px;\" width=\"150px;\" align=\"middle\">"
+              //todo: add smart contract support for images hashs
+              console.log('video: '+videoHash);
+              $scope.URL = 'http://localhost:8080/ipfs/'+videoHash;
+            });  
+            console.log(buffer)
+          })
+          reader.addEventListener('error', function (err) {
+            console.error('FileReader error' + err)
+          })
+          console.log('test')
+          reader.readAsArrayBuffer(file)
+        }
+
   
         if (file.type.match(imageType)) {
         //console.log('this is an image')
@@ -26924,18 +26956,23 @@ app.controller('mainController', function($scope){
           console.log('test')
           reader.readAsArrayBuffer(file)
           //for the image to preview reader.readAsDataURL(file); 
-        }else{
-          alert('Please upload an image')
         }
+        // if(file.type != imageType){
+        //   alert('Please upload an image or video');
+        // }
+        //  if(!file.type.match(video)){
+        //   alert('Please upload an image or video');
+        // }
       })
     })
+
 
 
 
     var returnHash = '';
     $scope.posts2 = permaObj;
     $scope.hash = hash;
-    $scope.newPost = {created_by: '', text: '', created_at: '', pic:'', resize:'', id:''};
+    $scope.newPost = {created_by: '', text: '', created_at: '', pic:'', video:'', resize:'', id:''};
 
     //pagenation stuff
     $scope.currentPage = 0;
@@ -26963,26 +27000,25 @@ app.controller('mainController', function($scope){
       }
 
       newObjStr = newObjStr.replace(']','');
-      newObjStr += ',{\"created_by\":\"'+$scope.newPost.created_by+'\",\"text\":\"'+$scope.newPost.text+'\",\"created_at\":\"'+Date.now()+'\",\"pic\":\"'+imgHash+'\", \"resize\":\"'+resizePost+'\", \"id\":\"'+id+'\", \"$$hashKey\":\"'+hashKeyz+'\"}]';
+      newObjStr += ',{\"created_by\":\"'+$scope.newPost.created_by+'\",\"text\":\"'+$scope.newPost.text+'\",\"created_at\":\"'+Date.now()+'\",\"pic\":\"'+imgHash+'\",\"video\":\"'+videoHash+'\", \"resize\":\"'+resizePost+'\", \"id\":\"'+id+'\", \"$$hashKey\":\"'+hashKeyz+'\"}]';
       console.log(newObjStr)
       console.log($scope.newPost.$$hashKey);
       var newObj = JSON.parse(newObjStr);
 
       
 
-      // function wait(callback){
-      //   console.log("adding this object " + newObjStr);
-      //   ipfs.add(new Buffer(newObjStr), function (err, res) {
-      //            if (err || !res) return console.error(err)
-      //             returnHash = res.Hash;
-      //             console.log(returnHash);
-      //             callback();
-      //        });  
-      // }
+      function wait(callback){
+        console.log("adding this object " + newObjStr);
+        ipfs.add(new Buffer(newObjStr), function (err, res) {
+                 if (err || !res) return console.error(err)
+                  returnHash = res.Hash;
+                  console.log(returnHash);
+                  callback();
+             });  
+      }
 
       // wait(function(){
       //   //set the variables in contract
-      // returnHash = 'QmSEy16Cu3sGSHAbcArKh3jSLptVLgEpUrD3BSfDvtuCYR';
       //   var splitHash = returnHash;
       //   var firstHalf = splitHash.substr(0, 24);
       //   var secondHalf = splitHash.substr(24);
@@ -26993,7 +27029,7 @@ app.controller('mainController', function($scope){
       //   var permachanContract = web3.eth.contract([{"constant":true,"inputs":[],"name":"getHash1","outputs":[{"name":"part1","type":"string"}],"type":"function"},{"constant":true,"inputs":[],"name":"getHash2","outputs":[{"name":"part2","type":"string"}],"type":"function"},{"constant":false,"inputs":[{"name":"firstPart","type":"string"},{"name":"secondPart","type":"string"}],"name":"setHash","outputs":[],"type":"function"}]);
       //   var permachanInstance = permachanContract.at('0x73a389029e7720e9203b636666b28c51b77a71cc');
 
-      //   permachanInstance.setHash(firstHalf, secondHalf, {from: web3.eth.accounts[1], gas: 70000});
+      //   permachanInstance.setHash(firstHalf, secondHalf, {from: web3.eth.accounts[0], gas: 70000});
 
 
         //   ipfsPublish(returnHash, function(o){
@@ -27020,17 +27056,19 @@ app.controller('mainController', function($scope){
 
         //   req.end();
         // }
-      //});
+      // });
       
       $scope.newPost.created_at = Date.now();
       $scope.newPost.pic = imgHash;
+      $scope.newPost.video = videoHash;
       $scope.newPost.resize = resizePost;
       $scope.newPost.id = id;
       //objStr = JSON.stringify(permaObj);
       $scope.posts2.push($scope.newPost);
       console.log("after hash key? "+$scope.newPost.$$hashKey);
-      $scope.newPost = {created_by: '', text: '', created_at: '', pic:'', resize:'', id:''};
+      $scope.newPost = {created_by: '', text: '', created_at: '', pic:'', video:'', resize:'', id:''};
       imgHash = '';
+      videoHash = '';
     };
  });
 
@@ -27059,7 +27097,7 @@ function generateUUID() {
 
 function generateUUIDsmall() {
   var d = new Date().getTime();
-  var uuid = 'xxx'.replace(/[xy]/g, function(c) {
+  var uuid = '0xx'.replace(/[xy]/g, function(c) {
       var r = (d + Math.random()*16)%16 | 0;
       d = Math.floor(d/16);
       return (c=='x' ? r : (r&0x3|0x8)).toString(16);

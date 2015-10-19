@@ -3,7 +3,7 @@
 		<p style="background-color: #fcc;">warning! this will cost ~ 0.002 Ether</p>
 		<input type="text" class="form-control" maxlength="40" placeholder="Your name (Anon if left blank)" ng-model="newPost.created_by" /> 
 		<textarea required class="form-control selectMe" maxlength="180" rows="3" placeholder="Say something" ng-model="newPost.text"></textarea>
-		Drag and drop images here!
+		Drag and drop images or video here!
 		<div id="dropTarget" class="dthover">
 
 		</div>
@@ -24,9 +24,19 @@
         </div>
 		<hr>
 			<div class="post" ng-repeat="post in posts2 | orderBy:mySort | startFrom:currentPage*pageSize | limitTo:pageSize" ng-class-odd="'odd'" ng-class-even="'even'"> 
+				{{post.}}
 				<p>{{post.text}}<a class="pull-right" href="#/coming">reply</a></p>
 				<!-- <div ng-bind-html-unsafe="imagePath"></div> -->
 				<p ng-show="post.pic != null && post.pic != ''"><a href="http://localhost:8080/ipfs/{{post.pic}}"><img src="http://localhost:8080/ipfs/{{post.pic}}" height="{{post.resize}}px;"></a></p>
+				<p ng-show="post.video != null && post.video != ''">
+					<!-- <a href="http://localhost:8080/ipfs/{{post.video}}"> -->
+					<video width="700" height="450" controls>  
+						<source ng-src="{{URL}}{{post.video}}">
+    					<!-- <source ng-src="{{URL}}">  -->
+					</video>  
+					<!-- </a> -->
+					<!-- <video src="http://localhost:8080/ipfs/{{post.video}}" height="200px;" width="250px;" align="middle"></video> -->  
+				</p>
 				<!-- <a ng-href="http://localhost:8080/ipfs/{{post.pic}}"><img src="http://localhost:8080/ipfs/{{post.pic}}" height="{{post.resize}}px;"  width="150px;" align="middle"></a> -->
 			
 				<small>ID: {{post.id}} Posted by @{{post.created_by}}</small>
