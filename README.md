@@ -1,4 +1,4 @@
-#permachan
+#swarmchan
 
 <h1>About</h1>
 <p>This is a chan style message board. Unlike other sites, this application does not have a mod, an owner, or a server. This is an experiment in <a href="https://ipfs.io/">IPFS</a> - the InterPlanetary File System and the <a href="https://ipfs.io/">Ethereum</a> blockchain and a WIP. Adding posts will distribute the data p2p in an attempt to make something as simple as text (for now, images coming soon) persist. Currently what you post here has no way of being censored or removed. As long as a computer has the app files and ethereum can resolve the current data state and assuming someone has it... and well I can't promise this will work and you will need a local ipfs and ethereum go client node running to use this. Be warned that just viewing the posts in this application will download them to your hard drive. I would suggest running <code>ipfs repo gc</code> after viewing this site.<a href="#/boards">Try it here!</a></p>
