@@ -1,2 +1,56 @@
-this will be the /b board
+<div class="clearfix">
+	<form ng-Submit="post()">
+		<p style="background-color: #fcc;">warning! this will cost ~ 0.002 Ether</p>
+		<input type="text" class="form-control" maxlength="40" placeholder="Your name (Anon if left blank)" ng-model="newPost.created_by" /> 
+		<textarea required class="form-control selectMe" maxlength="180" rows="3" placeholder="Say something" ng-model="newPost.text"></textarea>
+		Drag and drop images or video here!
+		<div id="dropTarget" class="dthover">
 
+		</div>
+		<input class="btn submit-btn pull-right" type="submit" value="Post" style="margin-top:-40px;"/>
+		</form>
+		
+	<div>
+		<br>
+		<p>Current data hash: {{hash}}</p>
+		<div ng-controller="pageCtrl">
+			<select ng-model='limit'>
+				<option value="">Select...</option>
+	            <option value='5'>Show 5 per page</option>
+	            <option value="10" selected>Show 10 per page</option>
+	            <option value='15'>Show 15 per page</option>
+	            <option value='20'>Show 20 per page</option>
+	            <option value='50'>Show 50 per page</option>
+	        </select>
+        </div>
+		<hr>
+			<div class="post" ng-repeat="post in posts3 | orderBy:mySort | startFrom:currentPage*pageSize | limitTo:pageSize" ng-class-odd="'odd'" ng-class-even="'even'"> 
+				<p>{{post.text}}<a class="pull-right" href="#/coming">reply</a></p>
+				<!-- <div ng-bind-html-unsafe="imagePath"></div> -->
+				<p ng-show="post.pic != null && post.pic != ''"><a href="http://localhost:8080/ipfs/{{post.pic}}"><img src="http://localhost:8080/ipfs/{{post.pic}}" height="{{post.resize}}px;"></a></p>
+				<p ng-show="post.video != null && post.video != ''">
+					<!-- <a href="http://localhost:8080/ipfs/{{post.video}}"> -->
+					<video width="700" height="450" controls>  
+						<!-- <source ng-src="http://localhost:8080/ipfs/{{post.video}}"> -->
+    					<!-- <source ng-src="{{URL}}">  -->
+						<source ng-src="{{post.video}}">
+    					<!-- <source ng-src="{{URL}}">  -->
+					</video>  
+					<!-- </a> -->
+					<!-- <video src="http://localhost:8080/ipfs/{{post.video}}" height="200px;" width="250px;" align="middle"></video> -->  
+				</p>
+				<!-- <a ng-href="http://localhost:8080/ipfs/{{post.pic}}"><img src="http://localhost:8080/ipfs/{{post.pic}}" height="{{post.resize}}px;"  width="150px;" align="middle"></a> -->
+			
+				<small>ID: {{post.id}} Posted by @{{post.created_by}}</small>
+				<small class="pull-right">{{post.created_at | date:"h:mma 'on' MMM d, y"}}</small>
+			</div>
+		<hr>
+			<button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+        		Previous
+    		</button>
+    			{{currentPage+1}}/{{numberOfPages()}}
+    		<button ng-disabled="currentPage >= data.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+        		Next
+    		</button>
+	</div>
+</div>
