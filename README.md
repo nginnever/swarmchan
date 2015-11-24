@@ -10,7 +10,7 @@
 <p><b>Run Locally</b>
 <br>
 <br>
-Boot up and ipfs client. Instructions on installing <a href="https://ipfs.io/docs/install/">ipfs</a>
+Boot up and ipfs client... Instructions on installing <a href="https://ipfs.io/docs/install/">ipfs</a>
 
 Boot up an ethereum geth client with a small amount of ether on it and you're set. This currently defaults to account[0] or your primary account, I should probably build a drop down menu to select different accounts. Just remember to add origins to the CORS accept in both ipfs and ethereum if you get resource sharing problems. Also you need to unlock your geth account to post. Starting geth with the line below will set everything up to post.
 <br>
